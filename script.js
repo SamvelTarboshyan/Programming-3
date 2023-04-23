@@ -30,28 +30,4 @@ function nkarel(matrix) {
 
                 }
         }
-
-
-
-                for (let i in grassArr) {
-                        grassArr[i].mul()
-                }
-
-
-                for(let i in grassEaterArr){
-                        grassEaterArr[i].eat()
-                }
-
-             
-
-                for(let i in predatorArr){
-                        predatorArr[i].eat()
-                }
- 
-
-                for(let i in flowerArr){
-                        flowerArr[i].eat()
-                }
- 
-
 }
