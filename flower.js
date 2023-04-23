@@ -25,7 +25,7 @@ module.exports = class Flower extends LivingCreature {
         this.getNewCoordinates()
         return super.chooseCell(char)
     }
-
+//efewfsefsa
     mul() {
         let emptyCell = this.chooseCell(0)
         let newCell = emptyCell[Math.floor(Math.random() * emptyCell.length)]
