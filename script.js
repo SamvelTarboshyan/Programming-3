@@ -31,3 +31,20 @@ function nkarel(matrix) {
                 }
         }
 }
+
+
+
+socket.on("send matrix",nkarel)
+
+
+function AddGrass(){
+       socket.emit("addGrass") 
+}
+
+function AddGrassEater(){
+        socket.emit("addgrassEater") 
+ }
+
+ function AddPredator(){
+        socket.emit("addPredator") 
+ }

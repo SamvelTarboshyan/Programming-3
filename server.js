@@ -135,7 +135,53 @@ io.sockets.emit("send matrix",matrix);
 
 setInterval(game,200)
 
-io.on("connection",function(){
-        createObject()
-})
+function AddGrass(){
+       for(let i =0;i < 6;i++){
+        let x = Math.floor(Math.random() * matrix[0].length)
+        let y = Math.floor(Math.random() * matrix.length)
 
+           matrix[y][x] = 1
+           var grass = new Grass(x,y)
+            grassArr.push(grass)
+       }
+}
+
+
+
+
+
+
+function AddGrassEater(){
+        for(let i =0;i <4;i++){
+         let x = Math.floor(Math.random() * matrix[0].length)
+         let y = Math.floor(Math.random() * matrix.length)
+ 
+            matrix[y][x] = 1
+            var grassEater = new GrassEater(x,y)
+             grassEaterArr.push(grassEater)
+        }
+ }
+ 
+ 
+ 
+
+ function AddPredator(){
+        for(let i =0;i <4;i++){
+         let x = Math.floor(Math.random() * matrix[0].length)
+         let y = Math.floor(Math.random() * matrix.length)
+ 
+            matrix[y][x] = 1
+            var predator  = new Predator(x,y)
+            predatorArr.push(predator)
+        }
+ }
+ 
+ 
+ 
+ io.on("connection",function(socket){
+        createObject()
+        socket.on("addGrass",AddGrass)
+        socket.on("addgrassEater",AddGrassEater)
+        socket.on("addPredator",AddPredator)
+
+})
