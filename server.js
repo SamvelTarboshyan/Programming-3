@@ -176,12 +176,36 @@ function AddGrassEater(){
         }
  }
  
+ function AddFlower(){
+        for(let i =0;i <4;i++){
+         let x = Math.floor(Math.random() * matrix[0].length)
+         let y = Math.floor(Math.random() * matrix.length)
  
+            matrix[y][x] = 1
+            var flower  = new Flower(x,y)
+            flowerArr.push(flower)
+        }
+ }
+
+ function kill() {
+	grassArr = []
+        grassEaterArr = []
+        predatorArr = []
+        flowerArr = []
+
+	for (var y = 0; y < matrix.length; y++) {
+		for (var x = 0; x < matrix[y].length; x++) {
+			matrix[y][x] = 0;
+		}
+	}
+	io.sockets.emit("matrix", matrix);
+}
  
  io.on("connection",function(socket){
         createObject()
         socket.on("addGrass",AddGrass)
         socket.on("addgrassEater",AddGrassEater)
         socket.on("addPredator",AddPredator)
-
+        socket.on("addFlower",AddFlower)
+        socket.on("kill",kill)
 })
