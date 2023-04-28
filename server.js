@@ -187,6 +187,27 @@ function AddGrassEater(){
         }
  }
 
+ var weath;
+
+ function Winter() {
+     weath = "winter";
+     io.sockets.emit('Winter', weath);
+ }
+ 
+ function Summer() {
+     weath = "summer";
+     io.sockets.emit('Summer', weath);
+ }
+ 
+ function Spring() {
+     weath = "spring";
+     io.sockets.emit('Spring', weath);
+ }
+ function Autumn() {
+     weath = "autumn";
+     io.sockets.emit('Autumn', weath);
+ }
+
  function kill() {
 	grassArr = []
         grassEaterArr = []
@@ -203,9 +224,25 @@ function AddGrassEater(){
  
  io.on("connection",function(socket){
         createObject()
+        socket.on("spring", Spring);
+        socket.on("summer", Summer);
+        socket.on("autumn", Autumn);
+        socket.on("winter", Winter);
         socket.on("addGrass",AddGrass)
         socket.on("addgrassEater",AddGrassEater)
         socket.on("addPredator",AddPredator)
         socket.on("addFlower",AddFlower)
         socket.on("kill",kill)
 })
+
+
+var statistics = {};
+setInterval(function () {
+    statistics.grass = grassArr.length;
+    statistics.grassEater = grassEaterArr.length;
+    statistics.predator = predatorArr.length;
+    statistics.flower = flowerArr.length;
+    fs.writeFile("statistics.json", JSON.stringify(statistics), function () {
+            console.log("statistics");
+})
+},1000)

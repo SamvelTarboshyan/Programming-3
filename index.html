@@ -14,7 +14,7 @@
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 15px;
+        font-size: 4px;
         margin: 4px 2px;
         cursor:pointer;
     }
@@ -28,15 +28,15 @@
         }
 
         h1{
-            text-shadow: black 2px 2px;
+            text-shadow: black 5px 5px;
             font-size: 26px;
             font-style: italic;
             color: white;
             text-align: center;
         }
         h2{
-            text-shadow: black 2px 2px;
-            font-size: 20px;
+            text-shadow: black 5px 5px;
+            font-size: 40px;
 
             font-style: italic;
             color: white;
@@ -57,12 +57,18 @@
 
     <div class="all__btns">
 
-        <button onclick="AddGrass()" class="add__btn" style="background-color: green">Add Grass</button>
+        <button onclick="AddGrass()" class="add__btn" style="background-color: rgb(0, 255, 0)">Add Grass</button>
         <button onclick="AddGrassEater()" class="add__btn" style="background-color: yellow; color: black">Add GrassEater</button>
-        <button onclick="AddPredator()" class="add__btn" style="background-color: red">Add Predator</button>
-        <button onclick="AddFlower()" class="add__btn" style="background-color: deepskyblue">Add Flower </button>
-        <button onclick="kill()" class="add__btn" style="background-color: white; color: black">Kill all</button>
+        <button onclick="AddPredator()" class="add__btn" style="background-color: rgb(255, 0, 0)">Add Predator</button>
+        <button onclick="AddFlower()" class="add__btn" style="background-color: rgb(0, 191, 255)">Add Flower </button>
+        <button onclick="kill()" class="add__btn" style="background-color: rgb(129, 112, 112); color: black">Kill all</button>
     
+    </div>
+    <div class="exanak__btns">
+        <button onclick="Spring()" class="btn__exanak" style="background-color: darkgreen">Spring</button>
+        <button onclick="Summer()" class="btn__exanak" style="background-color: #91ff00">Summer</button>
+        <button onclick="Autumn()" class="btn__exanak" style="background-color: #8a4b32">Autumn</button>
+        <button onclick="Winter()" class="btn__exanak" style="background-color: #ffffff">Winter</button>
     </div>
 </body>
 </html>
