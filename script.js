@@ -1,57 +1,88 @@
-var socket = io()
+var socket = io();
+
 var side = 30
-
-
+var weath;
+// sarkum e canvas
 function setup() {
-        createCanvas(25 * side, 25 * side)
-       
-
+  createCanvas(20 * side, 20 * side);
+  background('#acacac');
 }
 
-function nkarel(matrix) {
-        for (let y = 0; y < matrix.length; y++) {
-                for (let x = 0; x < matrix[y].length; x++) {
-                        if (matrix[y][x] == 1) {
-                                fill("green")
-                        } else if(matrix[y][x] == 2){
-                                fill ("orange")
-                        }else if(matrix[y][x] == 3){
-                                fill ("red")
-                        }else if(matrix[y][x] == 4){
-                                fill ("pink")
-                        }else if(matrix[y][x] == 11){
-                                fill ("violet")
-                        }
-                        else {
-                                fill("gray")
-                        }
-                        rect(x * side, y * side, side, side)
+socket.on("weather", function (data) {
+  weath = data;
+  console.log();
 
-                }
+})
+// nerkum e obeknery
+function drawMatrix(matrix) {
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      var obj = matrix[x][y];
+
+      if (obj == 0) {
+        fill("gray");
+        rect(x * side, y * side, side, side);
+      }
+      else if (obj == 1) {
+        if (weath == "summer") {
+          fill("green");
+        } else if (weath == "autumn") {
+          fill("#333300");
+        } else if (weath == "winter") {
+          fill("white");
+        } else if (weath == "spring") {
+          fill("#4dffa6");
+        } else {
+          fill("green")
         }
+
+        rect(x * side, y * side, side, side);
+      }
+      else if (obj == 2) {
+        fill("yellow");
+        rect(x * side, y * side, side, side);
+
+      } else if (obj == 3) {
+        fill("red");
+        rect(x * side, y * side, side, side);
+      }
+
+      else if (obj == 4) {
+        fill("black");
+        rect(x * side, y * side, side, side);
+      }
+      else if (obj == 5) {
+        fill("orange");
+        rect(x * side, y * side, side, side);
+      }
+
+    }
+  }
+}
+// stanum e serveric matrix-y 
+socket.on("matrix", drawMatrix);
+
+function kill() {
+  socket.emit("kill")
 }
 
-
-
-socket.on("send matrix",nkarel)
-
-
-function kill(){
-        socket.emit("kill") 
- }
-
-function AddGrass(){
-       socket.emit("addGrass") 
+function addGrass() {
+  socket.emit("add grass")
 }
 
-function AddGrassEater(){
-        socket.emit("addgrassEater") 
- }
+function addGrassEater() {
+  socket.emit("add grassEater")
+}
 
- function AddPredator(){
-        socket.emit("addPredator") 
- }
- function AddFlower(){
-        socket.emit("addFlower") 
- }
+function addPredator() {
+  socket.emit("add predator")
+}
+
+function addJoker() {
+  socket.emit("add Joker")
+}
+
+function addWolf() {
+  socket.emit("add wolf")
+}
 

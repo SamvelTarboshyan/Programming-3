@@ -1,74 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-    .button {
-        background-color: black;
-        border: none;
-        color: rgb(255,255,255);
-        padding:16px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 4px;
-        margin: 4px 2px;
-        cursor:pointer;
+
+  <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
+
+  <script src="script.js"></script>
+  <style>
+    #legend {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 800px;
     }
-        canvas {
-            margin-left: 33%;
-            margin-top: 10%;
-        }
-        body{
-            background: rgb(2,0,36);
-            background: linear-gradient(90deg, rgb(7, 36, 0) 0%, rgb(0, 255, 60) 42%, rgb(0, 200, 255) 83%);
-        }
 
-        h1{
-            text-shadow: black 5px 5px;
-            font-size: 26px;
-            font-style: italic;
-            color: white;
-            text-align: center;
-        }
-        h2{
-            text-shadow: black 5px 5px;
-            font-size: 40px;
+    .legend-color {
+      width: 30px;
+      height: 30px;
+    }
 
-            font-style: italic;
-            color: white;
-            text-align: center;
-        }
-    </style>
+    td {
+      border: 1px solid black;
+      font-size: 14px;
+      padding-left: 5px;
+    }
+
+
+    button {
+      border: none;
+      color: black;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+
+    .button {
+      background-color: #af4c4c;
+      /*red*/
+    }
+
+
+    .button1 {
+      background-color: #4CAF50;
+    }
+
+    /* Green */
+    .button2 {
+      background-color: rgb(250, 235, 27);
+    }
+
+    /* Yellow */
+    .button3 {
+      background-color: #f44336;
+    }
+
+    .button4 {
+      color: white;
+      background-color: black;
+    }
+
+    .button5 {
+      background-color: orange;
+    }
+
+    /* Red */
+  </style>
+
+
 </head>
+
 <body>
-   <h1>GAME OF LIFE</h1>
-   <h2>Samvel Tarboshyan</h2>
+  <div class="tools">
 
-   <script src="/socket.io/socket.io.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
-   <script src="script.js"></script>
+    <h1>GAME OF LIFE</h1>
+    <h2>Samvel Tarboshyan</h2>
+    <style>
+      .button {
+          background-color: black;
+          border: none;
+          color: rgb(255,255,255);
+          padding:16px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 4px;
+          margin: 4px 2px;
+          cursor:pointer;
+      }
+          canvas {
+              margin-left: 33%;
+              margin-top: 10%;
+          }
+          body{
+              background: rgb(2,0,36);
+              background: linear-gradient(90deg, rgb(7, 36, 0) 0%, rgb(0, 255, 60) 42%, rgb(0, 200, 255) 83%);
+          }
+  
+          h1{
+              text-shadow: black 5px 5px;
+              font-size: 26px;
+              font-style: italic;
+              color: white;
+              text-align: center;
+          }
+          h2{
+              text-shadow: black 5px 5px;
+              font-size: 40px;
+  
+              font-style: italic;
+              color: white;
+              text-align: center;
+          }
+      </style>
+
+
+    <button class="button" onclick="kill()"> Kill them all</button>
+    <button class="button1" onclick="addGrass()">Add grass</button>
+    <button class="button2" onclick="addGrassEater()">Add grass eater</button><br>
+    <button class="button3" onclick="addPredator()">Add predator</button>
+    <button class="button4" onclick="addJoker()">Add Joker</button>
+    <button class="button5" onclick="addWolf()">Add wolf</button>
+
+    <table id="legend">
+      <tr>
+        <td class="legend-color">Գույն</td>
+        <td>Անվանում</td>
+        <td>Շարժվում է</td>
+        <td>Ուտում է</td>
+        <td>Բազմանում է</td>
+        <td>Սատկում է</td>
+      </tr>
+
+      <tr>
+        <td class="legend-color" style="background-color:gray"></td>
+        <td>Դատարկ վանդակներ</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="legend-color" style="background-color:green"></td>
+        <td>Խոտ</td>
+        <td></td>
+        <td></td>
+        <td>Մոտակա 8 վանդակներում, 1 տակտը մեկ</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="legend-color" style="background-color:yellow"></td>
+        <td>Խոտակեր</td>
+        <td>Մոտակա 8 վանդակներում, էներգիան քչանում է 1֊ով</td>
+        <td>Խոտերին, մոտակա 8 վանդակներում, շարժվելիս էներգիան ավելանում է 1֊ով</td>
+        <td>Բազմանում է մոտակա տարածքներում, երբ էներգիան 10֊ից ավել է</td>
+        <td>Սատկում է, երբ էներգիան փոքր է 0֊ից</td>
+      </tr>
+      <tr>
+        <td class="legend-color" style="background-color:red"></td>
+        <td>Գիշատիչ</td>
+        <td>Մոտակա 8 վանդակներում, էներգիան քչանում է 2֊ով</td>
+        <td>Խոտակերներին, մոտակա 8 վանդակներում, շարժվելիս էներգիան ավելանում է 2֊ով</td>
+        <td>Բազմանում է մոտակա տարածքներում, երբ էներգիան 6֊ից ավել է</td>
+        <td>Սատկում է, երբ էներգիան փոքր է 0֊ից</td>
+      </tr>
+      <td class="legend-color" style="background-color:black"></td>
+      <td>Ջոկեր</td>
+      <td>Մոտակա 8 վանդակներում, էներգիան քչանում է 2֊ով</td>
+      <td>Խոտերին,Գիծատիչին մոտակա 8 վանդակներում, շարժվելիս էներգիան ավելանում է 2֊ով</td>
+      <td>Բազմանում է մոտակա տարածքներում, երբ էներգիան 6֊ից ավել է</td>
+      <td>Սատկում է, երբ էներգիան փոքր է 0֊ից</td>
+      </tr>
+      <td class="legend-color" style="background-color:orange"></td>
+      <td>Գայլ</td>
+      <td>Մոտակա 8 վանդակներում, էներգիան քչանում է 2֊ով</td>
+      <td>Խոտերակերին,Ջոկերին մոտակա 8 վանդակներում, շարժվելիս էներգիան ավելանում է 2֊ով</td>
+      <td>Բազմանում է մոտակա տարածքներում, երբ էներգիան 6֊ից ավել է</td>
+      <td>Սատկում է, երբ էներգիան փոքր է 0֊ից</td>
+    </table>
+
+
+
+
+
+
 </body>
-<body>
 
-
-    <div class="all__btns">
-
-        <button onclick="AddGrass()" class="add__btn" style="background-color: rgb(0, 255, 0)">Add Grass</button>
-        <button onclick="AddGrassEater()" class="add__btn" style="background-color: yellow; color: black">Add GrassEater</button>
-        <button onclick="AddPredator()" class="add__btn" style="background-color: rgb(255, 0, 0)">Add Predator</button>
-        <button onclick="AddFlower()" class="add__btn" style="background-color: rgb(0, 191, 255)">Add Flower </button>
-        <button onclick="kill()" class="add__btn" style="background-color: rgb(129, 112, 112); color: black">Kill all</button>
-    
-    </div>
-    <div class="exanak__btns">
-        <button onclick="Spring()" class="btn__exanak" style="background-color: darkgreen">Spring</button>
-        <button onclick="Summer()" class="btn__exanak" style="background-color: #91ff00">Summer</button>
-        <button onclick="Autumn()" class="btn__exanak" style="background-color: #8a4b32">Autumn</button>
-        <button onclick="Winter()" class="btn__exanak" style="background-color: #ffffff">Winter</button>
-    </div>
-</body>
 </html>
